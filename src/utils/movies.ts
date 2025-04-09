@@ -63,7 +63,6 @@ class MovieClient {
         })
 
         const genres = await response.json()
-
         return genres
     }
 
@@ -73,7 +72,6 @@ class MovieClient {
         })
 
         const movie = await response.json()
-
         return movie
     }
 
@@ -83,7 +81,6 @@ class MovieClient {
         })
 
         const movies = await response.json()
-
         return movies
     }
 
@@ -93,7 +90,6 @@ class MovieClient {
         })
 
         const titles = await response.json()
-
         return titles
     }
 
@@ -102,9 +98,8 @@ class MovieClient {
             headers: {Authorization: `Bearer ${this.token}`},
         })
 
-        const genres = await response.json()
-
-        return genres
+        const genre = await response.json()
+        return genre
     }
 }
 
