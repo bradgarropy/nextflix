@@ -9,6 +9,7 @@ import {movieClient} from "~/utils/movies"
 type HomeProps = {
     searchParams: Promise<{
         search?: string
+        genre?: string
         page?: number
         perPage?: number
     }>
@@ -17,11 +18,13 @@ type HomeProps = {
 const Home = async (props: HomeProps) => {
     const searchParams = await props.searchParams
     const search = searchParams.search ?? ""
+    const filter = searchParams.genre ?? ""
     const page = Number(searchParams.page) || undefined
     const perPage = Number(searchParams.perPage) || undefined
 
     const {movies, pagination} = await movieClient.getMovies({
         search,
+        genre: filter,
         page,
         perPage,
     })

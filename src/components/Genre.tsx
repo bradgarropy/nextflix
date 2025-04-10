@@ -14,20 +14,15 @@ const Genre: FC<GenreProps> = ({genre}) => {
     const pathname = usePathname()
     const {replace} = useRouter()
 
-    const genres = params.getAll("genre")
-    const isActive = genres.includes(genre.id)
+    const isActive = params.get("genre") === genre.title.toLowerCase()
 
     const handleFilter = () => {
         const newParams = new URLSearchParams(params)
-        const genres = newParams.getAll("genre")
 
-        if (genres.includes(genre.id)) {
-            const newGenres = genres.filter(id => id !== genre.id)
-
+        if (isActive) {
             newParams.delete("genre")
-            newGenres.forEach(id => newParams.append("genre", id))
         } else {
-            newParams.append("genre", genre.id)
+            newParams.set("genre", genre.title.toLowerCase())
         }
 
         replace(`${pathname}?${newParams.toString()}`)
