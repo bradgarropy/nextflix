@@ -39,10 +39,15 @@ type Movie = {
     title: string
 }
 
+type GetGenresResponse = {
+    genres: {
+        nodes: Genre[]
+    }
+}
+
 type Genre = {
     id: string
-    title: string | null
-    movies: Array<Partial<Movie>>
+    title: string
 }
 
 type AuthTokenResponse = {
@@ -89,24 +94,6 @@ class MovieClient {
         const {contentful}: HealthCheckResponse = await response.json()
 
         return contentful
-    }
-
-    getMoviesByGenre = async () => {
-        const response = await fetch(`${BASE_URL}/genres/movies`, {
-            headers: {Authorization: `Bearer ${this.token}`},
-        })
-
-        const genres = await response.json()
-        return genres
-    }
-
-    getMovie = async (id: Movie["id"]) => {
-        const response = await fetch(`${BASE_URL}/movies/${id}`, {
-            headers: {Authorization: `Bearer ${this.token}`},
-        })
-
-        const movie = await response.json()
-        return movie
     }
 
     getMovies = async ({
@@ -175,6 +162,29 @@ class MovieClient {
         }
     }
 
+    getGenres = async () => {
+        const GET_GENRES = gql`
+            query GetGenres {
+                genres {
+                    nodes {
+                        id
+                        title
+                    }
+                }
+            }
+        `
+
+        const results = await this.client?.query<GetGenresResponse>({
+            query: GET_GENRES,
+        })
+
+        if (!results) {
+            return {genres: []}
+        }
+
+        return {genres: results?.data.genres.nodes}
+    }
+
     getTitles = async () => {
         const response = await fetch(`${BASE_URL}/movies/titles`, {
             headers: {Authorization: `Bearer ${this.token}`},
@@ -182,15 +192,6 @@ class MovieClient {
 
         const titles = await response.json()
         return titles
-    }
-
-    getGenre = async (id: Genre["id"]) => {
-        const response = await fetch(`${BASE_URL}/movies/genres/${id}`, {
-            headers: {Authorization: `Bearer ${this.token}`},
-        })
-
-        const genre = await response.json()
-        return genre
     }
 }
 
