@@ -12,6 +12,7 @@ const Search = () => {
 
     const handleSearch = async (search: string) => {
         const newParams = new URLSearchParams(params)
+        newParams.delete("page")
 
         if (search) {
             newParams.set("search", search)
