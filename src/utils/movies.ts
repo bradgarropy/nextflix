@@ -14,7 +14,14 @@ type HealthCheckResponse = {
 type GetMoviesResponse = {
     movies: {
         nodes: Movie[]
+        pagination: Pagination
     }
+}
+
+type Pagination = {
+    page: number
+    perPage: number
+    totalPages: number
 }
 
 type Movie = {
@@ -128,6 +135,11 @@ class MovieClient {
                         summary
                         title
                     }
+                    pagination {
+                        page
+                        perPage
+                        totalPages
+                    }
                 }
             }
         `
@@ -147,11 +159,20 @@ class MovieClient {
         })
 
         if (!results) {
-            return []
+            return {
+                movies: [],
+                pagination: {
+                    page,
+                    perPage,
+                    totalPages: 0,
+                },
+            }
         }
 
-        const movies = results.data.movies.nodes
-        return movies
+        return {
+            movies: results.data.movies.nodes,
+            pagination: results.data.movies.pagination,
+        }
     }
 
     getTitles = async () => {
