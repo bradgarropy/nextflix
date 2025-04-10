@@ -1,5 +1,5 @@
 import Genre from "~/components/Genre"
-import Movies from "~/components/Movie"
+import Movies from "~/components/Movies"
 import Pagination from "~/components/Pagination"
 import Search from "~/components/Search"
 import {Separator} from "~/components/ui/separator"

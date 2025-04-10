@@ -17,6 +17,7 @@ type MoviesProps = {
 }
 
 const container = {
+    initial: {},
     show: {
         transition: {
             staggerChildren: 0.05,
