@@ -1,24 +1,35 @@
+import {
+    ApolloClient,
+    gql,
+    InMemoryCache,
+    NormalizedCacheObject,
+} from "@apollo/client"
+
 const BASE_URL = "https://0kadddxyh3.execute-api.us-east-1.amazonaws.com"
 
 type HealthCheckResponse = {
     contentful: boolean
 }
 
+type GetMoviesResponse = {
+    movies: {
+        nodes: Movie[]
+    }
+}
+
 type Movie = {
-    id: string
-    title: string
-    posterUrl: string
-    summary: string
-    duration: string
-    directors: string[]
-    mainActors: string[]
-    genres: Omit<Genre, "movies">[]
     datePublished: string
+    duration: string
+    genres: {
+        id: string
+        title: string
+    }
+    id: string
+    posterUrl: string
     rating: string
-    ratingValue: number
-    bestRating: number
-    worstRating: number
-    writers: string[]
+    ratingValue: string
+    summary: string
+    title: string
 }
 
 type Genre = {
@@ -33,26 +44,30 @@ type AuthTokenResponse = {
 
 type GetMoviesParams = {
     page?: number
-    limit?: number
+    perPage?: number
     search?: string
     genre?: string
 }
 
-type GetMoviesResponse = {
-    data: Movie[]
-    totalPages: number
-}
-
 class MovieClient {
     token: string | null
+    client: ApolloClient<NormalizedCacheObject> | null
 
     constructor() {
         this.token = null
+        this.client = null
     }
 
     init = async () => {
-        const token = await this.getAuthToken()
-        this.token = token
+        this.token = await this.getAuthToken()
+
+        this.client = new ApolloClient({
+            uri: `${BASE_URL}/graphql`,
+            cache: new InMemoryCache(),
+            headers: {
+                Authorization: `Bearer ${this.token}`,
+            },
+        })
     }
 
     getAuthToken = async () => {
@@ -87,17 +102,55 @@ class MovieClient {
         return movie
     }
 
-    getMovies = async ({search}: GetMoviesParams) => {
-        const params = new URLSearchParams({search: search ?? ""})
+    getMovies = async ({
+        page = 1,
+        perPage = 10,
+        search,
+        genre,
+    }: GetMoviesParams) => {
+        const GET_MOVIES = gql`
+            query GetMovies(
+                $where: MovieFilterInput
+                $pagination: PaginationInput
+            ) {
+                movies(where: $where, pagination: $pagination) {
+                    nodes {
+                        datePublished
+                        duration
+                        genres {
+                            id
+                            title
+                        }
+                        id
+                        posterUrl
+                        rating
+                        ratingValue
+                        summary
+                        title
+                    }
+                }
+            }
+        `
 
-        const response = await fetch(
-            `${BASE_URL}/movies?${params.toString()}`,
-            {
-                headers: {Authorization: `Bearer ${this.token}`},
+        const results = await this.client?.query<GetMoviesResponse>({
+            query: GET_MOVIES,
+            variables: {
+                where: {
+                    search,
+                    genre,
+                },
+                pagination: {
+                    page,
+                    perPage,
+                },
             },
-        )
+        })
 
-        const {data: movies}: GetMoviesResponse = await response.json()
+        if (!results) {
+            return []
+        }
+
+        const movies = results.data.movies.nodes
         return movies
     }
 
