@@ -30,6 +30,7 @@ const Genre: FC<GenreProps> = ({genre}) => {
 
     return (
         <Badge
+            className="cursor-pointer"
             variant={isActive ? "default" : "outline"}
             onClick={handleFilter}
         >

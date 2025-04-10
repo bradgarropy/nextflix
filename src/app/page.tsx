@@ -1,5 +1,5 @@
 import Genre from "~/components/Genre"
-import Movie from "~/components/Movie"
+import Movies from "~/components/Movies"
 import Pagination from "~/components/Pagination"
 import Search from "~/components/Search"
 import {Separator} from "~/components/ui/separator"
@@ -53,11 +53,7 @@ const Home = async (props: HomeProps) => {
                         <p className="mt-2 text-sm text-muted-foreground">{`${pagination.totalCount} ${pagination.totalCount > 1 ? "results" : "result"}`}</p>
                     </search>
 
-                    <div className="flex flex-col gap-8 mb-16">
-                        {movies.map(movie => {
-                            return <Movie key={movie.id} movie={movie} />
-                        })}
-                    </div>
+                    <Movies movies={movies} />
 
                     <Pagination
                         page={pagination.page}

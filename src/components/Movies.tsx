@@ -1,3 +1,5 @@
+"use client"
+
 import type {FC} from "react"
 import {Movie as MovieType} from "~/utils/movies"
 import {
@@ -8,6 +10,40 @@ import {
 } from "~/components/ui/card"
 import Image from "next/image"
 import {Badge} from "~/components/ui/badge"
+import {motion} from "motion/react"
+
+type MoviesProps = {
+    movies: MovieType[]
+}
+
+const container = {
+    initial: {},
+    show: {
+        transition: {
+            staggerChildren: 0.05,
+        },
+    },
+}
+
+const item = {
+    initial: {opacity: 0, y: -20},
+    show: {opacity: 1, y: 0},
+}
+
+const Movies: FC<MoviesProps> = ({movies}) => {
+    return (
+        <motion.div
+            className="flex flex-col gap-8 mb-16"
+            variants={container}
+            initial="initial"
+            animate="show"
+        >
+            {movies.map(movie => {
+                return <Movie key={movie.id} movie={movie} />
+            })}
+        </motion.div>
+    )
+}
 
 type MovieProps = {
     movie: MovieType
@@ -15,7 +51,7 @@ type MovieProps = {
 
 const Movie: FC<MovieProps> = ({movie}) => {
     return (
-        <div>
+        <motion.div variants={item}>
             <Card>
                 <CardContent className="grid grid-cols-[auto_auto_1fr] gap-12">
                     {movie.posterUrl ? (
@@ -56,8 +92,8 @@ const Movie: FC<MovieProps> = ({movie}) => {
                     </div>
                 </CardContent>
             </Card>
-        </div>
+        </motion.div>
     )
 }
 
-export default Movie
+export default Movies
