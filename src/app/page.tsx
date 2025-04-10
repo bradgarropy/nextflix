@@ -48,7 +48,10 @@ const Home = async (props: HomeProps) => {
                 </section>
 
                 <section>
-                    <Search />
+                    <search className="mb-16">
+                        <Search />
+                        <p className="mt-2 text-sm text-muted-foreground">{`${pagination.totalCount} ${pagination.totalCount > 1 ? "results" : "result"}`}</p>
+                    </search>
 
                     <div className="flex flex-col gap-8 mb-16">
                         {movies.map(movie => {
