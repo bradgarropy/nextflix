@@ -1,7 +1,7 @@
+import Genre from "~/components/Genre"
 import Movie from "~/components/Movie"
 import Pagination from "~/components/Pagination"
 import Search from "~/components/Search"
-import {Badge} from "~/components/ui/badge"
 import {Separator} from "~/components/ui/separator"
 
 import {movieClient} from "~/utils/movies"
@@ -39,11 +39,7 @@ const Home = async (props: HomeProps) => {
 
                     <div className="flex flex-col gap-2">
                         {genres.map(genre => {
-                            return (
-                                <Badge key={genre.id} variant="outline">
-                                    {genre.title}
-                                </Badge>
-                            )
+                            return <Genre key={genre.id} genre={genre} />
                         })}
                     </div>
                 </section>
