@@ -22,6 +22,7 @@ type Pagination = {
     page: number
     perPage: number
     totalPages: number
+    totalCount: number
 }
 
 type Movie = {
@@ -152,13 +153,50 @@ class MovieClient {
                     page,
                     perPage,
                     totalPages: 0,
+                    totalCount: 0,
                 },
             }
         }
 
+        const lastResults = await this.client?.query<GetMoviesResponse>({
+            query: GET_MOVIES,
+            variables: {
+                where: {
+                    search,
+                    genre,
+                },
+                pagination: {
+                    page: results.data.movies.pagination.totalPages,
+                    perPage: results.data.movies.pagination.perPage,
+                },
+            },
+        })
+
+        if (!lastResults) {
+            return {
+                movies: [],
+                pagination: {
+                    page,
+                    perPage,
+                    totalPages: 0,
+                    totalCount: 0,
+                },
+            }
+        }
+
+        const totalCount = Math.max(
+            0,
+            results.data.movies.pagination.perPage *
+                (results.data.movies.pagination.totalPages - 1) +
+                lastResults.data.movies.nodes.length,
+        )
+
         return {
             movies: results.data.movies.nodes,
-            pagination: results.data.movies.pagination,
+            pagination: {
+                ...results.data.movies.pagination,
+                totalCount,
+            } satisfies Pagination,
         }
     }
 
