@@ -23,7 +23,7 @@ type Movie = {
     genres: {
         id: string
         title: string
-    }
+    }[]
     id: string
     posterUrl: string
     rating: string
