@@ -1,6 +1,8 @@
 import Movie from "~/components/Movie"
 import Pagination from "~/components/Pagination"
 import Search from "~/components/Search"
+import {Badge} from "~/components/ui/badge"
+import {Separator} from "~/components/ui/separator"
 
 import {movieClient} from "~/utils/movies"
 
@@ -24,11 +26,28 @@ const Home = async (props: HomeProps) => {
         perPage,
     })
 
+    const {genres} = await movieClient.getGenres()
+
     return (
         <div className="grid grid-rows-[auto_1fr_auto] gap-4 min-h-screen">
             <header className="bg-slate-900 h-16 m-2 px-4 py-2 rounded-lg text-white"></header>
 
-            <main className="grid grid-cols-[3fr_1fr] gap-4 mx-2">
+            <main className="grid grid-cols-[1fr_3fr] gap-16 mx-16">
+                <section>
+                    <p>Filter by genre</p>
+                    <Separator className="mt-2 mb-8" />
+
+                    <div className="flex flex-col gap-2">
+                        {genres.map(genre => {
+                            return (
+                                <Badge key={genre.id} variant="outline">
+                                    {genre.title}
+                                </Badge>
+                            )
+                        })}
+                    </div>
+                </section>
+
                 <section>
                     <Search />
 
@@ -43,8 +62,6 @@ const Home = async (props: HomeProps) => {
                         totalPages={pagination.totalPages}
                     />
                 </section>
-
-                <section className="border border-slate-900">sidebar</section>
             </main>
 
             <footer className="bg-slate-900 h-48 m-2 rounded-lg"></footer>
