@@ -1,3 +1,4 @@
+import Movie from "~/components/Movie"
 import Search from "~/components/Search"
 import {movieClient} from "~/utils/movies"
 
@@ -15,12 +16,14 @@ const Home = async (props: HomeProps) => {
             <header className="bg-slate-900 h-16 m-2 px-4 py-2 rounded-lg text-white"></header>
 
             <main className="grid grid-cols-[3fr_1fr] gap-4 mx-2">
-                <section className="border border-slate-900">
+                <section>
                     <Search />
 
-                    {movies.length > 0 ? (
-                        <pre>{JSON.stringify(movies, null, 2)}</pre>
-                    ) : null}
+                    <div className="flex flex-col gap-8">
+                        {movies.map(movie => {
+                            return <Movie key={movie.id} movie={movie} />
+                        })}
+                    </div>
                 </section>
 
                 <section className="border border-slate-900">sidebar</section>
