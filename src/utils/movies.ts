@@ -31,6 +31,18 @@ type AuthTokenResponse = {
     token: string
 }
 
+type GetMoviesParams = {
+    page?: number
+    limit?: number
+    search?: string
+    genre?: string
+}
+
+type GetMoviesResponse = {
+    data: Movie[]
+    totalPages: number
+}
+
 class MovieClient {
     token: string | null
 
@@ -75,12 +87,17 @@ class MovieClient {
         return movie
     }
 
-    getMovies = async () => {
-        const response = await fetch(`${BASE_URL}/movies`, {
-            headers: {Authorization: `Bearer ${this.token}`},
-        })
+    getMovies = async ({search}: GetMoviesParams) => {
+        const params = new URLSearchParams({search: search ?? ""})
 
-        const movies = await response.json()
+        const response = await fetch(
+            `${BASE_URL}/movies?${params.toString()}`,
+            {
+                headers: {Authorization: `Bearer ${this.token}`},
+            },
+        )
+
+        const {data: movies}: GetMoviesResponse = await response.json()
         return movies
     }
 
@@ -108,3 +125,4 @@ await movieClient.init()
 
 export default MovieClient
 export {movieClient}
+export type {Movie, Genre}
