@@ -24,7 +24,7 @@ const Search = () => {
     }
 
     return (
-        <search className="mb-16">
+        <>
             <Label htmlFor="search">Search</Label>
 
             <Input
@@ -37,7 +37,7 @@ const Search = () => {
                     handleSearch(event.target.value)
                 }}
             />
-        </search>
+        </>
     )
 }
 
