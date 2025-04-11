@@ -37,8 +37,8 @@ const Home = async (props: HomeProps) => {
                 <span className="text-xl font-bold">Nextflix</span>
             </header>
 
-            <main className="grid grid-cols-[1fr_3fr] gap-16 mx-16 max-w-7xl justify-self-center">
-                <section>
+            <main className="grid grid-cols-[1fr_3fr] gap-16 mx-16 max-w-7xl justify-self-center max-[950px]:grid-cols-[1fr]">
+                <section className="max-[950px]:hidden">
                     <p>Filter by genre</p>
                     <Separator className="mt-2 mb-8" />
 
