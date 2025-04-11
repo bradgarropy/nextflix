@@ -1,8 +1,9 @@
 "use client"
 
+import Link from "next/link"
 import {usePathname, useRouter, useSearchParams} from "next/navigation"
-import type {FC} from "react"
-import {Badge} from "~/components/ui/badge"
+import type {FC, MouseEvent} from "react"
+import {badgeVariants} from "~/components/ui/badge"
 import type {Genre} from "~/utils/movies"
 
 type GenreProps = {
@@ -16,7 +17,8 @@ const Genre: FC<GenreProps> = ({genre}) => {
 
     const isActive = params.get("genre") === genre.title.toLowerCase()
 
-    const handleFilter = () => {
+    const handleFilter = (event: MouseEvent<HTMLAnchorElement>) => {
+        event.preventDefault()
         const newParams = new URLSearchParams(params)
 
         if (isActive) {
@@ -29,13 +31,17 @@ const Genre: FC<GenreProps> = ({genre}) => {
     }
 
     return (
-        <Badge
-            className="cursor-pointer"
-            variant={isActive ? "default" : "outline"}
-            onClick={handleFilter}
-        >
-            {genre.title}
-        </Badge>
+        <>
+            <Link
+                href=""
+                onClick={handleFilter}
+                className={badgeVariants({
+                    variant: isActive ? "default" : "outline",
+                })}
+            >
+                {genre.title}
+            </Link>
+        </>
     )
 }
 

@@ -25,7 +25,9 @@ const Search = () => {
 
     return (
         <>
-            <Label htmlFor="search">Search</Label>
+            <Label htmlFor="search" className="text-3xl mb-2">
+                What will you watch next?
+            </Label>
 
             <Input
                 id="search"
