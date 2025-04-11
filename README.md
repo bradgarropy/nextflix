@@ -1,11 +1,9 @@
 # Nextflix
 
 _A movie searching app made for demo purposes._  
-[Demo][demo] | [Repository][repository]
+_[Demo][demo] | [Repository][repository]_
 
----
-
-### Getting Started
+## Getting Started
 
 Clone the repository, install the dependencies, and run the application.
 
@@ -16,7 +14,7 @@ npm install
 npm run dev
 ```
 
-### Built With
+## Built With
 
 I used a few notable technologies while building this application.
 
@@ -31,17 +29,17 @@ I used a few notable technologies while building this application.
 
 Open your browser to [http://localhost:3000][localhost] to see the application!
 
-### Interesting Bits
+## Interesting Bits
 
 Working with Next.js client and server components was interesting! It's a nice exercise in user experience to think through where the data and actions should go.
 
 After trying the limited REST API, I realized that the GraphQL API would offer more functionality with less network requests. So I decided to create a little [GraphQL client][graphql] that took care of the authentication.
 
-### Proud Developer
+## Proud Developer
 
 Normally my design sense is [pretty minimal][bradgarropy], but for this exercise I wanted the application to feel a bit more polished. So I used [Shadcn][shadcn] components, coupled with some animations via [Motion][motion] that made the application feel really good.
 
-### Next Features
+## Next Features
 
 Given more time, I'd flesh out the application more with dedicated pages for each movie and genre, an account system where you could save movies to watch later, and add some sorting options based on length or rating. I'd also work more on mobile responsiveness to make the app feel good on small devices. The information can be a bit dense at times.
 
