@@ -11,6 +11,8 @@ import {
 import Image from "next/image"
 import {Badge} from "~/components/ui/badge"
 import {motion} from "motion/react"
+import {useSearchParams} from "next/navigation"
+import {formatDate, formatDuration} from "~/utils/format"
 
 type MoviesProps = {
     movies: MovieType[]
@@ -31,6 +33,8 @@ const item = {
 }
 
 const Movies: FC<MoviesProps> = ({movies}) => {
+    const params = useSearchParams()
+
     return (
         <motion.div
             className="flex flex-col gap-8 mb-16"
@@ -39,7 +43,12 @@ const Movies: FC<MoviesProps> = ({movies}) => {
             animate="show"
         >
             {movies.map(movie => {
-                return <Movie key={movie.id} movie={movie} />
+                return (
+                    <Movie
+                        key={`${movie.id}-${params.toString()}`}
+                        movie={movie}
+                    />
+                )
             })}
         </motion.div>
     )
@@ -69,14 +78,18 @@ const Movie: FC<MovieProps> = ({movie}) => {
                         <CardTitle className="mb-2">{movie.title}</CardTitle>
 
                         <CardDescription>
-                            <p>{movie.datePublished}</p>
-                            <p>{movie.duration}</p>
+                            <p>{formatDuration(movie.duration)}</p>
+                            <p>{formatDate(movie.datePublished)}</p>
                             <p>{movie.rating}</p>
                         </CardDescription>
                     </div>
 
                     <div className="grid grid-rows=[auto_1fr] gap-2">
-                        <p>{movie.summary}</p>
+                        {movie.summary ? (
+                            <p>{movie.summary}</p>
+                        ) : (
+                            <p className="italic">No summary provided.</p>
+                        )}
 
                         <div className="flex justify-between items-end text-muted-foreground">
                             <div className="flex gap-2">
