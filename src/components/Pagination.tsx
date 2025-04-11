@@ -42,7 +42,7 @@ const Pagination: FC<PaginationProps> = ({page, totalPages}) => {
                         className={
                             page === 1
                                 ? "pointer-events-none opacity-50"
-                                : undefined
+                                : "cursor-pointer"
                         }
                         onClick={() => handlePage(page - 1)}
                     />
@@ -56,21 +56,31 @@ const Pagination: FC<PaginationProps> = ({page, totalPages}) => {
 
                 {page > 1 ? (
                     <PaginationItem>
-                        <PaginationLink onClick={() => handlePage(page - 1)}>
+                        <PaginationLink
+                            className="cursor-pointer"
+                            onClick={() => handlePage(page - 1)}
+                        >
                             {page - 1}
                         </PaginationLink>
                     </PaginationItem>
                 ) : null}
 
                 <PaginationItem>
-                    <PaginationLink onClick={() => handlePage(page)} isActive>
+                    <PaginationLink
+                        onClick={() => handlePage(page)}
+                        isActive
+                        className="pointer-events-none"
+                    >
                         {page}
                     </PaginationLink>
                 </PaginationItem>
 
                 {page < totalPages ? (
                     <PaginationItem>
-                        <PaginationLink onClick={() => handlePage(page + 1)}>
+                        <PaginationLink
+                            className="cursor-pointer"
+                            onClick={() => handlePage(page + 1)}
+                        >
                             {page + 1}
                         </PaginationLink>
                     </PaginationItem>
@@ -87,7 +97,7 @@ const Pagination: FC<PaginationProps> = ({page, totalPages}) => {
                         className={
                             page === totalPages
                                 ? "pointer-events-none opacity-50"
-                                : undefined
+                                : "cursor-pointer"
                         }
                         onClick={() => handlePage(page + 1)}
                     />
